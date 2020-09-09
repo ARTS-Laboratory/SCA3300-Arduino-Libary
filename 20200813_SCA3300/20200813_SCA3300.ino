@@ -13,6 +13,7 @@ sca3300_library::SCA3300 sca3300(chipSelect, spiSpeed, sca3300_library::Operatio
 void setup() {
 	Serial.begin(9600);
 	sca3300.initChip(true);
+	Serial.println(sca3300.getWhoAmI());
 }
 
 // the loop function runs over and over again until power down or reset

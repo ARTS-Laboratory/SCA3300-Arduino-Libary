@@ -163,7 +163,15 @@ namespace sca3300_library {
 		return 0.0;
 	}
 
-	// private methods
+	const uint16_t SCA3300::getWhoAmI() const
+	{
+		uint8_t data[FRAME_LENGTH];
+		send(READ_WHOAMI, data);
+		send(READ_WHOAMI, data);
+		return static_cast<uint16_t>(convertData(data));
+	}
+
+	// private instance methods
 	void SCA3300::send(const uint8_t spiFrame[FRAME_LENGTH], uint8_t ret[FRAME_LENGTH]) const
 	{
 		// copy data
@@ -177,12 +185,43 @@ namespace sca3300_library {
 		SPI.endTransaction();
 		digitalWrite(chipSelect, HIGH);
 	}
-	const uint8_t SCA3300::getReturnStatus(const uint8_t spiFrame[FRAME_LENGTH]) const
+
+	// private static methods
+	const uint8_t SCA3300::getReturnStatus(const uint8_t spiFrame[FRAME_LENGTH])
 	{
 		return spiFrame[0] & 0b11; // Table 13, RS [25:24] of the frame
 	}
-	const int16_t SCA3300::convertData(const uint8_t data[FRAME_LENGTH]) const
+	const int16_t SCA3300::convertData(const uint8_t data[FRAME_LENGTH])
 	{
 		return (static_cast<uint16_t>(data[1]) << 8) | (static_cast<uint8_t>(data[2]));
 	}
+
+	const bool SCA3300::checkCRC(const uint8_t spiFrame[FRAME_LENGTH])
+	{
+		uint8_t crc = 0xFF;
+		for (size_t i = 0; i < FRAME_LENGTH - 1; ++i)
+		{
+			for (size_t i = 0; i < 8; ++i)
+			{
+				uint8_t bitValue = (spiFrame[0] >> (8 - 1 - i)) & 0x01;
+				crc = crc8(bitValue, crc);
+			}
+		}
+		crc = (uint8_t)~crc;
+		return crc == spiFrame[3];
+	}
+
+	const uint8_t SCA3300::crc8(uint8_t bitValue, uint8_t crc)
+	{
+		uint8_t temp = crc & 0x00;
+		if (bitValue == 0x01) {
+			temp ^= 0x80;
+		}
+		crc <<= 1;
+		if (temp > 0) {
+			crc ^= 0x1D;
+		}
+		return crc;
+	}
+	
 };

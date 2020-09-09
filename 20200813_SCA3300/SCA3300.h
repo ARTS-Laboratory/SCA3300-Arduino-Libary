@@ -57,12 +57,20 @@ namespace sca3300_library {
 		/*
 		 * spiFrame[0] & 0b11
 		 */
-		const uint8_t getReturnStatus(const uint8_t spiFrame[FRAME_LENGTH]) const;
+		static const uint8_t getReturnStatus(const uint8_t spiFrame[FRAME_LENGTH]);
 
 		/*
 		 * convert data section of the frame back to signed 16-bit integer
 		 */
-		const int16_t convertData(const uint8_t spiFrame[FRAME_LENGTH])const;
+		static const int16_t convertData(const uint8_t spiFrame[FRAME_LENGTH]);
+		
+		/*
+		 * calculate crc for the given spiFrame
+		 * spec p23
+		 */
+		static const bool checkCRC(const uint8_t spiFrame[FRAME_LENGTH]);
+
+		static const uint8_t crc8(uint8_t bitValue, uint8_t crc);
 	public:
 		/*
 		 * The constructor will only set up instance variable.
@@ -100,6 +108,12 @@ namespace sca3300_library {
 		 * If RS of spi frame is not normal, then this method returns 0.0
 		 */
 		double getTemp() const;
+
+		/*
+		 * Read who am i
+		 * returned value should be 0x51
+		 */
+		const uint16_t getWhoAmI() const;
 	};
 
 };
