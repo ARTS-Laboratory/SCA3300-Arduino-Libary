@@ -50,7 +50,7 @@ namespace sca3300_library {
 		// step 4 set measurement mode
 		if (showLog)
 		{
-			Serial.println("Step 2 : SW Reset");
+			Serial.println("Step 4 : Set Measurement Mode");
 		}
 		// step 5 wait 15 ms (M1-M3) or 100 ms (M4)
 		uint8_t returnStatus[4];// Table 10, 4 RS to be checked
@@ -109,7 +109,7 @@ namespace sca3300_library {
 		send(READ_STATUS_SUMMARY, data);
 		send(READ_STATUS_SUMMARY, data);
 		uint8_t RS = getReturnStatus(data);
-		if (RS & 0b11 == 0b01)
+		if ((RS & 0b11) == 0b01)
 		{
 			return true;
 		}
@@ -122,17 +122,20 @@ namespace sca3300_library {
 		{
 		case sca3300_library::Axis::X:
 			send(READ_ACC_X, data);
+			send(READ_ACC_X, data);
 			break;
 		case sca3300_library::Axis::Y:
 			send(READ_ACC_Y, data);
+			send(READ_ACC_Y, data);
 			break;
 		case sca3300_library::Axis::Z:
+			send(READ_ACC_Z, data);
 			send(READ_ACC_Z, data);
 			break;
 		default:
 			return 0.0;
 		}
-		send(READ_WHOAMI, data);
+		//send(READ_WHOAMI, data);
 		if (getReturnStatus(data) == 0b01)
 		{
 			//int16_t rawAccel = (static_cast<uint16_t>(data[1]) << 8) | (static_cast<uint8_t>(data[2]));
@@ -148,7 +151,7 @@ namespace sca3300_library {
 				return rawAccel / 5400.0;
 			}
 		}
-		return 0.0;
+		return -279.0;
 	}
 	double SCA3300::getTemp() const
 	{
@@ -193,7 +196,7 @@ namespace sca3300_library {
 	}
 	const int16_t SCA3300::convertData(const uint8_t data[FRAME_LENGTH])
 	{
-		return (static_cast<uint16_t>(data[1]) << 8) | (static_cast<uint8_t>(data[2]));
+		return static_cast<int16_t>((static_cast<uint16_t>(data[1]) << 8) | (static_cast<uint16_t>(data[2])));
 	}
 
 	const bool SCA3300::checkCRC(const uint8_t spiFrame[FRAME_LENGTH])

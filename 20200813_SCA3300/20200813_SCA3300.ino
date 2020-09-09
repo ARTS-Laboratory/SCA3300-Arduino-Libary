@@ -14,9 +14,12 @@ void setup() {
 	Serial.begin(9600);
 	sca3300.initChip(true);
 	Serial.println(sca3300.getWhoAmI());
+	Serial.println(sca3300.getWhoAmI());
+	Serial.println(sca3300.getWhoAmI());
 }
 
 // the loop function runs over and over again until power down or reset
 void loop() {
-
+	delay(1000);
+	Serial.println(sca3300.getAccel(sca3300_library::Axis::Z));
 }
