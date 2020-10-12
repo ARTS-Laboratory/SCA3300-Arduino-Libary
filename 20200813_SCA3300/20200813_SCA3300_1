@@ -12,7 +12,7 @@ sca3300_library::SCA3300 sca3300(chipSelect, spiSpeed, sca3300_library::Operatio
 // the setup function runs once when you press reset or power the board
 void setup() {
 	Serial.begin(9600);
-	Serial.println(sca3300.initChip(true));
+	sca3300.initChip(true);
 	Serial.println(sca3300.getWhoAmI());
 	Serial.println(sca3300.getWhoAmI());
 	Serial.println(sca3300.getWhoAmI());

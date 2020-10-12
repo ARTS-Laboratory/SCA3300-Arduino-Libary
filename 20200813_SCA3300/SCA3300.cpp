@@ -45,6 +45,14 @@ namespace sca3300_library {
 		}
 		uint8_t data[FRAME_LENGTH];
 		send(SW_RESET, data);
+		if (showLog) {
+			for (size_t i = 0; i < FRAME_LENGTH; ++i)
+			{
+				Serial.print(data[i],BIN);
+				Serial.print(" ");
+			}
+			Serial.println();
+		}
 		// step 3 wait 1 ms
 		delay(1);
 		// step 4 set measurement mode
@@ -53,7 +61,7 @@ namespace sca3300_library {
 			Serial.println("Step 4 : Set Measurement Mode");
 		}
 		// step 5 wait 15 ms (M1-M3) or 100 ms (M4)
-		uint8_t returnStatus[4];// Table 10, 4 RS to be checked
+		//uint8_t returnStatus[4];// Table 10, 4 RS to be checked
 		switch (operationMode)
 		{
 		case OperationMode::MODE1:
@@ -73,7 +81,15 @@ namespace sca3300_library {
 			delay(100);
 			break;
 		}
-		returnStatus[0] = getReturnStatus(data);
+		if (showLog) {
+			for (size_t i = 0; i < FRAME_LENGTH; ++i)
+			{
+				Serial.print(data[i], BIN);
+				Serial.print(" ");
+			}
+			Serial.println();
+		}
+		//returnStatus[0] = getReturnStatus(data);
 		// Step 6 - 8, RS should be '11', '11', '01'
 		if (showLog)
 		{
@@ -81,18 +97,28 @@ namespace sca3300_library {
 		}
 		for (size_t i = 0; i < 3; ++i) {
 			send(READ_STATUS_SUMMARY, data);
-			returnStatus[i + 1] = getReturnStatus(data);
-		}
-		if (showLog)
-		{
-			for (size_t i = 0; i < 4; ++i)
-			{
-				Serial.print(returnStatus[i] + " ");
+			//returnStatus[i + 1] = getReturnStatus(data);
+			if (showLog) {
+				for (size_t i = 0; i < FRAME_LENGTH; ++i)
+				{
+					Serial.print(data[i], BIN);
+					Serial.print(" ");
+				}
+				Serial.println();
 			}
-			Serial.println();
 		}
+		//if (showLog)
+		//{
+		//	Serial.println("Return Status");
+		//	for (size_t i = 0; i < 4; ++i)
+		//	{
+		//		Serial.print(returnStatus[i] + " ");
+		//	}
+		//	Serial.println();
+		//}
 		// check RS to verify whether setup successfully
-		if (returnStatus[0] == 0b11 && returnStatus[1] == 0b11 && returnStatus[2] == 0b11 && returnStatus[3] == 0b01)
+		//if (returnStatus[0] == 0b11 && returnStatus[1] == 0b11 && returnStatus[2] == 0b11 && returnStatus[3] == 0b01)
+		if (getReturnStatus(data)==0b01)
 		{
 			return true;
 		}
