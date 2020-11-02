@@ -159,7 +159,7 @@ namespace sca3300_library {
 			send(READ_ACC_Z, data);
 			break;
 		default:
-			return 0.0;
+			return static_cast<double>(ERROR_VALUE);
 		}
 		//send(READ_WHOAMI, data);
 		if (getReturnStatus(data) == 0b01)
@@ -177,8 +177,38 @@ namespace sca3300_library {
 				return rawAccel / 5400.0;
 			}
 		}
-		return -279.0;
+		return static_cast<double>(ERROR_VALUE);
 	}
+
+	int16_t SCA3300::getAccelRaw(Axis axis) const
+	{
+		uint8_t data[FRAME_LENGTH];
+		switch (axis)
+		{
+		case sca3300_library::Axis::X:
+			send(READ_ACC_X, data);
+			send(READ_ACC_X, data);
+			break;
+		case sca3300_library::Axis::Y:
+			send(READ_ACC_Y, data);
+			send(READ_ACC_Y, data);
+			break;
+		case sca3300_library::Axis::Z:
+			send(READ_ACC_Z, data);
+			send(READ_ACC_Z, data);
+			break;
+		default:
+			return 0.0;
+		}
+		//send(READ_WHOAMI, data);
+		if (getReturnStatus(data) == 0b01)
+		{
+			//int16_t rawAccel = (static_cast<uint16_t>(data[1]) << 8) | (static_cast<uint8_t>(data[2]));
+			return convertData(data);
+		}
+		return static_cast<uint16_t>(ERROR_VALUE);
+	}
+
 	double SCA3300::getTemp() const
 	{
 		uint8_t data[FRAME_LENGTH];
@@ -189,7 +219,19 @@ namespace sca3300_library {
 		{
 			return -273.0 + (rawTemp / 18.9);
 		}
-		return 0.0;
+		return static_cast<double>(ERROR_VALUE);
+	}
+
+	int16_t SCA3300::getTempRaw() const
+	{
+		uint8_t data[FRAME_LENGTH];
+		send(READ_TEMPERATURE, data);
+		send(READ_WHOAMI, data);
+		if (getReturnStatus(data) == 0b01)
+		{
+			return convertData(data);
+		}
+		return static_cast<uint16_t>(ERROR_VALUE);
 	}
 
 	const uint16_t SCA3300::getWhoAmI() const

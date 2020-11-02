@@ -27,6 +27,7 @@ namespace sca3300_library {
 	private:
 		// Table 14 Operations and equivalent SPI frames
 		static const byte FRAME_LENGTH = 4;
+		static const uint8_t ERROR_VALUE = 255;
 		static const uint8_t READ_ACC_X[];
 		static const uint8_t READ_ACC_Y[];
 		static const uint8_t READ_ACC_Z[];
@@ -53,7 +54,7 @@ namespace sca3300_library {
 		OperationMode operationMode;
 
 		void send(const uint8_t spiFrame[FRAME_LENGTH], uint8_t ret[FRAME_LENGTH]) const;
-		
+
 		/*
 		 * spiFrame[0] & 0b11
 		 */
@@ -63,7 +64,7 @@ namespace sca3300_library {
 		 * convert data section of the frame back to signed 16-bit integer
 		 */
 		static const int16_t convertData(const uint8_t spiFrame[FRAME_LENGTH]);
-		
+
 		/*
 		 * calculate crc for the given spiFrame
 		 * spec p23
@@ -92,22 +93,38 @@ namespace sca3300_library {
 
 		/*
 		 * This method calls READ_STO 2 times and parse the return status
-		 * If return status = 01, the method returns true and false otherwise.
+		 * 
+		 * @return status = 01, the method returns true and false otherwise.
 		 */
 		const bool getReturnStatus() const;
 
 		/*
-		 * Pass in the interested axis.
-		 * This method converts raw data back to # of g(m/s^2) based on the set operation mode
-		 * If RS of spi frame is not normal, then this method returns 0.0
-		*/
+		 * Pass in the interested axis and returns # of g(9.8 m/s^2)
+		 * 
+		 * @return acceleration in # of g(9.8m/s^2), 255 if spi abnormal
+		 */
 		double getAccel(Axis axis) const;
 
 		/*
+		 * Pass in the interested axis and returns acceleration
+		 * 
+		 * @ return raw acceleration data, 255 if spi abnormal
+		 */
+		int16_t getAccelRaw(Axis axis) const;
+
+		/*
 		 * This method converts temperature data back to degree celsius.
-		 * If RS of spi frame is not normal, then this method returns 0.0
+		 *
+		 * @return temperatur in celsius, 255 if spi abnormal
 		 */
 		double getTemp() const;
+
+		/*
+		 * This method gets raw temperature data.
+		 * 
+		 * @ return raw temperature data, 255 if spi abnormal
+		 */
+		int16_t getTempRaw() const;
 
 		/*
 		 * Read who am i
