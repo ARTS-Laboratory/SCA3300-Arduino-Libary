@@ -221,11 +221,8 @@ namespace sca3300_library {
 			//int16_t rawAccel = (static_cast<uint16_t>(data[1]) << 8) | (static_cast<uint8_t>(data[2]));
 			return convertData(data);
 		}
-		else
-		{
-
-		}
-		return static_cast<uint16_t>(ERROR_VALUE);
+		initChip();
+		return getAccelRaw(axis);
 	}
 
 	double SCA3300::getTemp() const
@@ -238,7 +235,8 @@ namespace sca3300_library {
 		{
 			return -273.0 + (rawTemp / 18.9);
 		}
-		return static_cast<double>(ERROR_VALUE);
+		initChip();
+		return getTemp();
 	}
 
 	int16_t SCA3300::getTempRaw() const
@@ -250,7 +248,8 @@ namespace sca3300_library {
 		{
 			return convertData(data);
 		}
-		return static_cast<uint16_t>(ERROR_VALUE);
+		initChip();
+		return getTempRaw();
 	}
 
 	const uint16_t SCA3300::getWhoAmI() const

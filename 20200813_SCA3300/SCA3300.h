@@ -102,28 +102,36 @@ namespace sca3300_library {
 		/*
 		 * Pass in the interested axis and returns # of g(9.8 m/s^2)
 		 * 
-		 * @return acceleration in # of g(9.8m/s^2), 255 if spi abnormal
+		 * if return status is abnormal, reinitialize the chip
+		 * 
+		 * @return acceleration in # of g(9.8m/s^2)
 		 */
 		double getAccel(Axis axis) const;
 
 		/*
 		 * Pass in the interested axis and returns acceleration
 		 * 
-		 * @ return raw acceleration data, 255 if spi abnormal
+		 * if return status is abnormal, reinitialize the chip
+		 * 
+		 * @ return raw acceleration data
 		 */
 		int16_t getAccelRaw(Axis axis) const;
 
 		/*
 		 * This method converts temperature data back to degree celsius.
+		 * 
+		 * if return status is abnormal, reinitialize the chip
 		 *
-		 * @return temperatur in celsius, 255 if spi abnormal
+		 * @return temperatur in celsius
 		 */
 		double getTemp() const;
 
 		/*
 		 * This method gets raw temperature data.
 		 * 
-		 * @ return raw temperature data, 255 if spi abnormal
+		 * if return status is abnormal, reinitialize the chip
+		 * 
+		 * @ return raw temperature data
 		 */
 		int16_t getTempRaw() const;
 
