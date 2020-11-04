@@ -5,7 +5,8 @@
 
 #include "SCA3300.h"
 
-const byte chipSelect = 10;
+//const byte chipSelect = 10; // teansy 4.1 dev
+const byte chipSelect = 5; // teansy 4.0 spi
 const uint32_t spiSpeed = 2000000; // typ. f_sck = 2 MHz
 sca3300_library::SCA3300 sca3300(chipSelect, spiSpeed, sca3300_library::OperationMode::MODE3);
 
