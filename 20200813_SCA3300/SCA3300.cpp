@@ -29,14 +29,15 @@ namespace sca3300_library {
 	const uint8_t SCA3300::SWITCH_TO_BANK_ONE[] = { 0b11111100,0,0b1,0b1101110 };
 
 	// constructor
-	SCA3300::SCA3300(const uint8_t chipSelect, const uint32_t spiSpeed, const OperationMode operationMode) :chipSelect(chipSelect), spiSettings(spiSpeed, MSBFIRST, SPI_MODE0), operationMode(operationMode)
+	SCA3300::SCA3300(const uint8_t chipSelect, const uint32_t spiSpeed, const OperationMode operationMode, bool showLog) :chipSelect(chipSelect), spiSettings(spiSpeed, MSBFIRST, SPI_MODE0), operationMode(operationMode), showLog(showLog)
 	{
 		pinMode(chipSelect, OUTPUT);
 	}
 
 	// public methods
-	bool SCA3300::initChip(bool showLog = false) const
+	bool SCA3300::initChip() const
 	{
+		uint32_t start = micros();
 		digitalWrite(chipSelect, HIGH);
 		SPI.begin();
 		// step 2 write sw reset command
@@ -48,7 +49,7 @@ namespace sca3300_library {
 		if (showLog) {
 			for (size_t i = 0; i < FRAME_LENGTH; ++i)
 			{
-				Serial.print(data[i],BIN);
+				Serial.print(data[i], BIN);
 				Serial.print(" ");
 			}
 			Serial.println();
@@ -118,9 +119,22 @@ namespace sca3300_library {
 		//}
 		// check RS to verify whether setup successfully
 		//if (returnStatus[0] == 0b11 && returnStatus[1] == 0b11 && returnStatus[2] == 0b11 && returnStatus[3] == 0b01)
-		if (getReturnStatus(data)==0b01)
+		uint32_t end = micros();
+		if (showLog == true)
 		{
+			Serial.printf("Start %ld End %lu\n", start, end);
+		}
+		if (getReturnStatus(data) == 0b01)
+		{
+			if (showLog == true)
+			{
+				Serial.println("Initialization Succeed");
+			}
 			return true;
+		}
+		if (showLog == true)
+		{
+			Serial.println("Initialization Failed");
 		}
 		return false;
 	}
@@ -177,7 +191,8 @@ namespace sca3300_library {
 				return rawAccel / 5400.0;
 			}
 		}
-		return static_cast<double>(ERROR_VALUE);
+		initChip();
+		return getAccel(axis);
 	}
 
 	int16_t SCA3300::getAccelRaw(Axis axis) const
@@ -205,6 +220,10 @@ namespace sca3300_library {
 		{
 			//int16_t rawAccel = (static_cast<uint16_t>(data[1]) << 8) | (static_cast<uint8_t>(data[2]));
 			return convertData(data);
+		}
+		else
+		{
+
 		}
 		return static_cast<uint16_t>(ERROR_VALUE);
 	}
@@ -294,5 +313,5 @@ namespace sca3300_library {
 		}
 		return crc;
 	}
-	
+
 };

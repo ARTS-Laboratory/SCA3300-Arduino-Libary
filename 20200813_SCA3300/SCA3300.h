@@ -52,6 +52,7 @@ namespace sca3300_library {
 		const uint8_t chipSelect;
 		const SPISettings spiSettings;
 		OperationMode operationMode;
+		bool showLog;
 
 		void send(const uint8_t spiFrame[FRAME_LENGTH], uint8_t ret[FRAME_LENGTH]) const;
 
@@ -77,13 +78,13 @@ namespace sca3300_library {
 		 * The constructor will only set up instance variable.
 		 * User are responsible for calling initChip() to initialize the chip
 		 */
-		SCA3300(uint8_t chipSelect, uint32_t spiSpeed, OperationMode operationMode);
+		SCA3300(uint8_t chipSelect, uint32_t spiSpeed, OperationMode operationMode, bool showlog = false);
 
 		/*
 		 * Initialize the chip.
 		 * If initialization succeed, the method returns ture and vice versa.
 		 */
-		bool initChip(bool showLog) const;
+		bool initChip(/*bool showLog*/) const;
 
 		/*
 		 * Change operation mode and reinitialize the chip
