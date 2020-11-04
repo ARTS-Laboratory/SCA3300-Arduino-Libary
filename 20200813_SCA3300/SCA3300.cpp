@@ -35,7 +35,7 @@ namespace sca3300_library {
 	}
 
 	// public methods
-	bool SCA3300::initChip() const
+	void SCA3300::initChip() const
 	{
 		uint32_t start = micros();
 		digitalWrite(chipSelect, HIGH);
@@ -124,24 +124,11 @@ namespace sca3300_library {
 		{
 			Serial.printf("Start %ld End %lu\n", start, end);
 		}
-		if (getReturnStatus(data) == 0b01)
-		{
-			if (showLog == true)
-			{
-				Serial.println("Initialization Succeed");
-			}
-			return true;
-		}
-		if (showLog == true)
-		{
-			Serial.println("Initialization Failed");
-		}
-		return false;
 	}
-	bool SCA3300::chageMode(OperationMode mode)
+	void SCA3300::chageMode(OperationMode mode)
 	{
 		this->operationMode = mode;
-		return initChip();
+		initChip();
 	}
 	const bool SCA3300::getReturnStatus() const
 	{
