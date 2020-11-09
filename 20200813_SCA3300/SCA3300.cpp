@@ -163,23 +163,24 @@ namespace sca3300_library {
 			return static_cast<double>(ERROR_VALUE);
 		}
 		//send(READ_WHOAMI, data);
-		if (getReturnStatus(data) == 0b01)
-		{
+		//if (getReturnStatus(data) == 0b01)
+		//{
 			//int16_t rawAccel = (static_cast<uint16_t>(data[1]) << 8) | (static_cast<uint8_t>(data[2]));
-			int16_t rawAccel = convertData(data);
-			switch (operationMode)
-			{
-			case OperationMode::MODE1:
-				return rawAccel / 2700.0;
-			case OperationMode::MODE2:
-				return rawAccel / 1350.0;
-			case OperationMode::MODE3:
-			case OperationMode::MODE4:
-				return rawAccel / 5400.0;
-			}
+		int16_t rawAccel = convertData(data);
+		switch (operationMode)
+		{
+		case OperationMode::MODE1:
+			return rawAccel / 2700.0;
+		case OperationMode::MODE2:
+			return rawAccel / 1350.0;
+		case OperationMode::MODE3:
+		case OperationMode::MODE4:
+			return rawAccel / 5400.0;
 		}
-		initChip();
-		return getAccel(axis);
+		//}
+		//initChip();
+		//return getAccel(axis);
+		return 255;
 	}
 
 	int16_t SCA3300::getAccelRaw(Axis axis) const

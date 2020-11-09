@@ -21,7 +21,7 @@ void setup() {
 
 // the loop function runs over and over again until power down or reset
 void loop() {
-	delay(10);
+	delay(100);
 	//delayMicroseconds(10);
 	Serial.println(sca3300.getAccel(sca3300_library::Axis::Z));
 }
