@@ -140,6 +140,23 @@ namespace sca3300_library {
 		 * returned value should be 0x51
 		 */
 		const uint16_t getWhoAmI() const;
+
+		/*
+		 * Convert raw acceleration data to m/s^2
+		 * 
+		 * @param rawAccel raw data to be converted
+		 * @param operationMode mode that the data was collected with
+		 * @return converted acceleartion in m/s^2
+		 */
+		static double convertRawAccelToAccel(uint16_t rawAccel, const OperationMode& operationMode);
+
+		/*
+		* Convert raw temperature to celsius
+		* 
+		* @param rawTemp raw data to be converted
+		* @return converted temperature in celsius
+		*/
+		static double convertRawTempToTemp(uint16_t rawTemp);
 	};
 
 };

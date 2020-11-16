@@ -180,16 +180,17 @@ namespace sca3300_library {
 		{
 			//int16_t rawAccel = (static_cast<uint16_t>(data[1]) << 8) | (static_cast<uint8_t>(data[2]));
 			int16_t rawAccel = convertData(data);
-			switch (operationMode)
-			{
-			case OperationMode::MODE1:
-				return rawAccel / 2700.0;
-			case OperationMode::MODE2:
-				return rawAccel / 1350.0;
-			case OperationMode::MODE3:
-			case OperationMode::MODE4:
-				return rawAccel / 5400.0;
-			}
+			//switch (operationMode)
+			//{
+			//case OperationMode::MODE1:
+			//	return rawAccel / 2700.0;
+			//case OperationMode::MODE2:
+			//	return rawAccel / 1350.0;
+			//case OperationMode::MODE3:
+			//case OperationMode::MODE4:
+			//	return rawAccel / 5400.0;
+			//}
+			return convertRawAccelToAccel(rawAccel, operationMode);
 		}
 		initChip();
 		return getAccel(axis);
@@ -233,7 +234,8 @@ namespace sca3300_library {
 		int16_t rawTemp = convertData(data);
 		if (getReturnStatus(data) == 0b01)
 		{
-			return -273.0 + (rawTemp / 18.9);
+			//return -273.0 + (rawTemp / 18.9);
+			return convertRawTempToTemp(rawTemp);
 		}
 		initChip();
 		return getTemp();
@@ -258,6 +260,26 @@ namespace sca3300_library {
 		send(READ_WHOAMI, data);
 		send(READ_WHOAMI, data);
 		return static_cast<uint16_t>(convertData(data));
+	}
+
+	double SCA3300::convertRawAccelToAccel(uint16_t rawAccel, const OperationMode& operationMode)
+	{
+		switch (operationMode)
+		{
+		case OperationMode::MODE1:
+			return rawAccel / 2700.0;
+		case OperationMode::MODE2:
+			return rawAccel / 1350.0;
+		case OperationMode::MODE3:
+		case OperationMode::MODE4:
+			return rawAccel / 5400.0;
+		}
+		return 0.0;
+	}
+
+	double SCA3300::convertRawTempToTemp(uint16_t rawTemp)
+	{
+		return -273.0 + (rawTemp / 18.9);
 	}
 
 	// private instance methods
