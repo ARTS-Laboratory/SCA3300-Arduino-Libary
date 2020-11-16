@@ -143,6 +143,10 @@ namespace sca3300_library {
 		this->operationMode = mode;
 		return initChip();
 	}
+	OperationMode SCA3300::getOperationMode() const
+	{
+		return operationMode;
+	}
 	const bool SCA3300::getReturnStatus() const
 	{
 		uint8_t data[FRAME_LENGTH];

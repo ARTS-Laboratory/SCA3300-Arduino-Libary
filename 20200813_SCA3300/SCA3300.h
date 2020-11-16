@@ -93,6 +93,13 @@ namespace sca3300_library {
 		bool chageMode(OperationMode mode);
 
 		/*
+		* Return current mode that the chip is operating on
+		* 
+		* @return current operationMode
+		*/
+		OperationMode getOperationMode() const;
+
+		/*
 		 * This method calls READ_STO 2 times and parse the return status
 		 * 
 		 * @return status = 01, the method returns true and false otherwise.
