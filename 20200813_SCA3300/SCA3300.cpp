@@ -36,9 +36,9 @@ namespace sca3300_library {
 	}
 
 	// public methods
-	bool SCA3300::initChip() const
+	void SCA3300::initChip() const
 	{
-		uint32_t start = micros();
+		//uint32_t start = micros();
 		digitalWrite(chipSelect, HIGH);
 		SPI.begin();
 		// step 2 write sw reset command
@@ -120,29 +120,29 @@ namespace sca3300_library {
 		//}
 		// check RS to verify whether setup successfully
 		//if (returnStatus[0] == 0b11 && returnStatus[1] == 0b11 && returnStatus[2] == 0b11 && returnStatus[3] == 0b01)
-		uint32_t end = micros();
-		if (showLog == true)
-		{
-			Serial.printf("Start %ld End %lu\n", start, end);
-		}
-		if (getReturnStatus(data) == 0b01)
-		{
-			if (showLog == true)
-			{
-				Serial.println("Initialization Succeed");
-			}
-			return true;
-		}
-		if (showLog == true)
-		{
-			Serial.println("Initialization Failed");
-		}
-		return false;
+		//uint32_t end = micros();
+		//if (showLog == true)
+		//{
+		//	Serial.printf("Start %ld End %lu\n", start, end);
+		//}
+		//if (getReturnStatus(data) == 0b01)
+		//{
+		//	if (showLog == true)
+		//	{
+		//		Serial.println("Initialization Succeed");
+		//	}
+		//	return true;
+		//}
+		//if (showLog == true)
+		//{
+		//	Serial.println("Initialization Failed");
+		//}
+		//return false;
 	}
-	bool SCA3300::chageMode(OperationMode mode)
+	void SCA3300::chageMode(OperationMode mode)
 	{
 		this->operationMode = mode;
-		return initChip();
+		initChip();
 	}
 	OperationMode SCA3300::getOperationMode() const
 	{

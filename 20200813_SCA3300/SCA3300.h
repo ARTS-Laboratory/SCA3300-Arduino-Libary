@@ -84,13 +84,13 @@ namespace sca3300_library {
 		 * Initialize the chip.
 		 * If initialization succeed, the method returns ture and vice versa.
 		 */
-		bool initChip(/*bool showLog*/) const;
+		void initChip(/*bool showLog*/) const;
 
 		/*
 		 * Change operation mode and reinitialize the chip
 		 * If change succeed, the method returns true and vice versa.
 		 */
-		bool chageMode(OperationMode mode);
+		void chageMode(OperationMode mode);
 
 		/*
 		* Return current mode that the chip is operating on
