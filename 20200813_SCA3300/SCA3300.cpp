@@ -32,6 +32,7 @@ namespace sca3300_library {
 	SCA3300::SCA3300(const uint8_t chipSelect, const uint32_t spiSpeed, const OperationMode operationMode, bool showLog) :chipSelect(chipSelect), spiSettings(spiSpeed, MSBFIRST, SPI_MODE0), operationMode(operationMode), showLog(showLog)
 	{
 		pinMode(chipSelect, OUTPUT);
+		digitalWrite(chipSelect, HIGH);
 	}
 
 	// public methods
