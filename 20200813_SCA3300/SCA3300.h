@@ -167,7 +167,7 @@ namespace sca3300_library {
 		 * @param operationMode mode that the data was collected with
 		 * @return converted acceleartion in m/s^2
 		 */
-		static double convertRawAccelToAccel(uint16_t rawAccel, const OperationMode& operationMode);
+		static double convertRawAccelToAccel(int16_t rawAccel, const OperationMode& operationMode);
 
 		/*
 		* Convert raw temperature to celsius
@@ -175,7 +175,7 @@ namespace sca3300_library {
 		* @param rawTemp raw data to be converted
 		* @return converted temperature in celsius
 		*/
-		static double convertRawTempToTemp(uint16_t rawTemp);
+		static double convertRawTempToTemp(int16_t rawTemp);
 
 	};
 

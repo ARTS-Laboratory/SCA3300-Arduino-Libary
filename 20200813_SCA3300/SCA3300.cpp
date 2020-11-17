@@ -271,7 +271,7 @@ namespace sca3300_library {
 		return static_cast<uint16_t>(convertData(data));
 	}
 
-	double SCA3300::convertRawAccelToAccel(uint16_t rawAccel, const OperationMode& operationMode)
+	double SCA3300::convertRawAccelToAccel(int16_t rawAccel, const OperationMode& operationMode)
 	{
 		switch (operationMode)
 		{
@@ -286,7 +286,7 @@ namespace sca3300_library {
 		return 0.0;
 	}
 
-	double SCA3300::convertRawTempToTemp(uint16_t rawTemp)
+	double SCA3300::convertRawTempToTemp(int16_t rawTemp)
 	{
 		return -273.0 + (rawTemp / 18.9);
 	}
@@ -314,7 +314,13 @@ namespace sca3300_library {
 	
 	const int16_t SCA3300::convertData(const uint8_t data[FRAME_LENGTH])
 	{
-		return static_cast<int16_t>((static_cast<uint16_t>(data[1]) << 8) | (static_cast<uint16_t>(data[2])));
+		//uint16_t temp = static_cast<uint16_t>((static_cast<uint16_t>(data[1]) << 8) | (static_cast<uint16_t>(data[2])));
+		//temp = ~temp + 1;
+		//return static_cast<int16_t>(temp);
+		//int16_t temp = (data[1] << 8) | (data[2]);
+		//return temp;
+		return (data[1] << 8) | (data[2]);
+		//return ((static_cast<uint16_t>(data[1]) << 8) | (static_cast<uint16_t>(data[2])));
 	}
 
 	const bool SCA3300::checkCRC(const uint8_t spiFrame[FRAME_LENGTH])
