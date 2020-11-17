@@ -139,15 +139,18 @@ namespace sca3300_library {
 		//}
 		//return false;
 	}
-	void SCA3300::chageMode(OperationMode mode)
+	
+	void SCA3300::chageOperationMode(OperationMode operationMode)
 	{
-		this->operationMode = mode;
+		this->operationMode = operationMode;
 		initChip();
 	}
+	
 	OperationMode SCA3300::getOperationMode() const
 	{
 		return operationMode;
 	}
+	
 	const bool SCA3300::getReturnStatus() const
 	{
 		uint8_t data[FRAME_LENGTH];
@@ -160,6 +163,7 @@ namespace sca3300_library {
 		}
 		return false;
 	}
+	
 	double SCA3300::getAccel(Axis axis) const
 	{
 		uint8_t data[FRAME_LENGTH];
@@ -307,6 +311,7 @@ namespace sca3300_library {
 	{
 		return spiFrame[0] & 0b11; // Table 13, RS [25:24] of the frame
 	}
+	
 	const int16_t SCA3300::convertData(const uint8_t data[FRAME_LENGTH])
 	{
 		return static_cast<int16_t>((static_cast<uint16_t>(data[1]) << 8) | (static_cast<uint16_t>(data[2])));

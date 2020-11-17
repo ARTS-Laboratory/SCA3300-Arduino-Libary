@@ -77,20 +77,28 @@ namespace sca3300_library {
 		/*
 		 * The constructor will only set up instance variable.
 		 * User are responsible for calling initChip() to initialize the chip
+		 * 
+		 * @param chipSelect CS for the SCA3300
+		 * @param spiSpeed spi speed for the SCA3300
+		 * @param operationMode sca3300_library::SCA3300::OperationMode for the chip
+		 * @param showLog print whatever frame received to the serail monitor
 		 */
 		SCA3300(uint8_t chipSelect, uint32_t spiSpeed, OperationMode operationMode, bool showlog = false);
 
 		/*
 		 * Initialize the chip.
 		 * If initialization succeed, the method returns ture and vice versa.
+		 * 
 		 */
-		void initChip(/*bool showLog*/) const;
+		void initChip() const;
 
 		/*
 		 * Change operation mode and reinitialize the chip
 		 * If change succeed, the method returns true and vice versa.
+		 * 
+		 * @param operationMode sca3300_library::SCA3300::OperationMode for the chip
 		 */
-		void chageMode(OperationMode mode);
+		void chageOperationMode(OperationMode operationMode);
 
 		/*
 		* Return current mode that the chip is operating on
@@ -111,6 +119,7 @@ namespace sca3300_library {
 		 * 
 		 * if return status is abnormal, reinitialize the chip
 		 * 
+		 * @param axis sca3300_library::SCA3300::Axis axis to be measured
 		 * @return acceleration in # of g(9.8m/s^2)
 		 */
 		double getAccel(Axis axis) const;
@@ -120,7 +129,8 @@ namespace sca3300_library {
 		 * 
 		 * if return status is abnormal, reinitialize the chip
 		 * 
-		 * @ return raw acceleration data
+		 * @param axis sca3300_library::SCA3300::Axis axis to be measured
+		 * @return raw acceleration data
 		 */
 		int16_t getAccelRaw(Axis axis) const;
 
@@ -138,13 +148,15 @@ namespace sca3300_library {
 		 * 
 		 * if return status is abnormal, reinitialize the chip
 		 * 
-		 * @ return raw temperature data
+		 * @return raw temperature data
 		 */
 		int16_t getTempRaw() const;
 
 		/*
 		 * Read who am i
 		 * returned value should be 0x51
+		 * 
+		 * @return who am i received from the SCA3300
 		 */
 		const uint16_t getWhoAmI() const;
 
@@ -164,6 +176,7 @@ namespace sca3300_library {
 		* @return converted temperature in celsius
 		*/
 		static double convertRawTempToTemp(uint16_t rawTemp);
+
 	};
 
 };
