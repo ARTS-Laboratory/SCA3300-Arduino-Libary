@@ -314,13 +314,7 @@ namespace sca3300_library {
 	
 	const int16_t SCA3300::convertData(const uint8_t data[FRAME_LENGTH])
 	{
-		//uint16_t temp = static_cast<uint16_t>((static_cast<uint16_t>(data[1]) << 8) | (static_cast<uint16_t>(data[2])));
-		//temp = ~temp + 1;
-		//return static_cast<int16_t>(temp);
-		//int16_t temp = (data[1] << 8) | (data[2]);
-		//return temp;
 		return (data[1] << 8) | (data[2]);
-		//return ((static_cast<uint16_t>(data[1]) << 8) | (static_cast<uint16_t>(data[2])));
 	}
 
 	const bool SCA3300::checkCRC(const uint8_t spiFrame[FRAME_LENGTH])
