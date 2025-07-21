@@ -5,8 +5,8 @@ C++.
 ## Installation
 The current recommended installation process is to clone this library to the
 Arduino library directory on your system. For Linux/MacOS, this is
-'~/.arduino15/libraries'. Windows users can clone to
-'Documents\Arduino\libraries'. From there, the 'SCA3300.h' header should be
+`~/.arduino15/libraries`. Windows users can clone to
+`Documents\Arduino\libraries`. From there, the `SCA3300.h` header should be
 available to you. You may also choose to download the compressed archive of the
 source code and decompress it in the proper directory.
 
